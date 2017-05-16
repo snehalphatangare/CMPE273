@@ -1,0 +1,67 @@
+POST /Menu
+curl -H "Content-Type: application/json" -X POST -d '{"menu_id": "3","store_name": "Pieology","selection": ["Cheese","Pepperoni"],"size": ["Slide", "Small", "Medium", "Large", "X-Large"],"price": ["3.50", "7.00", "10.00", "15.00", "20.00"],"store_hours": {"Mon": "10am-10pm","Tue": "10am-10pm","Wed": "10am-10pm","Thu": "10am-10pm","Fri": "10am-10pm","Sat": "11am-12pm","Sun": "11am-12pm"}}' https://yadbeavsn1.execute-api.us-west-2.amazonaws.com/test/menu
+
+Response: "200 OK"
+
+
+GET /Menu{menuId}
+curl -X GET -H "Content-type: application/json" -H "Accept:application/json" https://yadbeavsn1.execute-api.us-west-2.amazonaws.com/test/menu/1
+
+Response:
+{
+  "selection": [
+    "Cheese",
+    "Pepperoni",
+    "Vegetable"
+  ],
+  "menuId": "1",
+  "price": [
+    "3.50",
+    "7.00",
+    "10.00",
+    "15.00",
+    "20.00"
+  ],
+  "store_hours": {
+    "Wed": "10am-10pm",
+    "Sun": "11am-12pm",
+    "Fri": "10am-10pm",
+    "Tue": "10am-10pm",
+    "Mon": "10am-10pm",
+    "Thu": "10am-10pm",
+    "Sat": "11am-12pm"
+  },
+  "store_name": "Dominos",
+  "size": [
+    "Slide",
+    "Small",
+    "Medium",
+    "Large",
+    "X-Large"
+  ]
+}
+
+PUT /Menu{menuId}
+curl -H "Content-type: application/json" -X PUT -d '{"selection": ["Cheese","Pepperoni","Vegetable"]}' https://yadbeavsn1.execute-api.us-west-2.amazonaws.com/test/menu/3
+Response: "200 OK"
+
+DELETE /Menu{menuId}
+curl -X DELETE -H "Content-type: application/json" -H "Accept:application/json" https://yadbeavsn1.execute-api.us-west-2.amazonaws.com/test/menu/3
+Response: "200 OK"
+
+POST /Order
+curl -H "Content-Type: application/json" -X POST -d '{   "menu_id": "3","order_id": "order1","customer_name": "John Smith","customer_email": "foobar@gmail.com"}' https://yadbeavsn1.execute-api.us-west-2.amazonaws.com/test/order
+Response: {"message": "Hi John Smith, please choose one of these selection: 1. Cheese  2. Pepperoni  "}
+
+PUT /order/{order-id}
+curl -H "Content-type: application/json" -X PUT -d '{"input":"1"}' https://yadbeavsn1.execute-api.us-west-2.amazonaws.com/test/order/815cc36e-3892-11e7-9c34-e2b7a630cc8b
+Response: {"message": "Which size do you want? 1. Slide  2. Small  3. Medium  4. Large  5. X-Large  "}
+
+PUT /order/{order-id}
+curl -H "Content-type: application/json" -X PUT -d '{"input":"4"}' https://yadbeavsn1.execute-api.us-west-2.amazonaws.com/test/order/815cc36e-3892-11e7-9c34-e2b7a630cc8b
+Response: {"message": "Your order costs $15.00. We will email you when the order is ready. Thank you!"}
+
+GET /Order
+curl -X GET -H "Content-type: application/json" -H "Accept:application/json" https://yadbeavsn1.execute-api.us-west-2.amazonaws.com/test/order/815cc36e-3892-11e7-9c34-e2b7a630cc8b
+Response:
+{"orderId": "815cc36e-3892-11e7-9c34-e2b7a630cc8b", "customer_email": "foobar@gmail.com", "menuId": "3", "orderdetail": {"selection": "Cheese", "costs": "15.00", "order_time": "05-14-17@10:48:16", "size": "Large"}, "order_status": "Processing", "customer_name": "John Smith"}
